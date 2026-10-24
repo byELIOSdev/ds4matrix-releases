@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZEUS — PS4 Gamepad Skin Demo</title>
+<link rel="stylesheet" href="zeus-ps4-skin.css">
+<style>
+  html, body {
+    margin: 0;
+    min-height: 100vh;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    padding: 40px 16px 60px;
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    box-sizing: border-box;
+  }
+  .page-title {
+    color: #ffe9a8;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.6;
+    text-align: center;
+  }
+  .stage-wrap {
+    position: relative;
+  }
+  .controls {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .controls button {
+    background: linear-gradient(180deg, #2a2210 0%, #171205 100%);
+    border: 1.5px solid #caa24a;
+    color: #ffe9a8;
+    font-family: inherit;
+    font-size: 13px;
+    letter-spacing: 1px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: box-shadow 0.15s ease, transform 0.08s ease;
+  }
+  .controls button:hover {
+    box-shadow: 0 0 14px rgba(255, 210, 90, 0.5);
+  }
+  .controls button:active {
+    transform: translateY(1px);
+  }
+  .hint {
+    color: rgba(255, 233, 168, 0.45);
+    font-size: 12px;
+    text-align: center;
+    max-width: 640px;
+    line-height: 1.6;
+  }
+  code {
+    color: #ffd766;
+    background: rgba(255, 215, 110, 0.08);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="page-title">ZEUS — DualShock / PS4 overlay skin preview</div>
+
+  <div class="stage-wrap">
+    <div class="custom" id="stage">
+      <div class="controller">
+        <div class="sticks">
+          <div class="stick left"  data-btn title="Left stick"></div>
+          <div class="stick right" data-btn title="Right stick"></div>
+        </div>
+
+        <div class="arrows">
+          <div class="button up"    data-btn title="D-Pad Up"></div>
+          <div class="button down"  data-btn title="D-Pad Down"></div>
+          <div class="button left"  data-btn title="D-Pad Left"></div>
+          <div class="button right" data-btn title="D-Pad Right"></div>
+        </div>
+
+        <div class="abxy">
+          <div class="button y" data-btn title="Triangle"></div>
+          <div class="button x" data-btn title="Square"></div>
+          <div class="button b" data-btn title="Circle"></div>
+          <div class="button a" data-btn title="Cross"></div>
+        </div>
+
+        <div class="trigger left shoulder"  data-btn title="L1"></div>
+        <div class="trigger left"           data-btn title="L2"></div>
+        <div class="trigger right shoulder" data-btn title="R1"></div>
+        <div class="trigger right"          data-btn title="R2"></div>
+
+        <div class="back"  data-btn title="Share"></div>
+        <div class="start" data-btn title="Options"></div>
+        <div class="touchpad" data-btn title="Touchpad"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="demoBtn">⚡ Correr demo</button>
+    <button id="allBtn">Mantener todo iluminado</button>
+    <button id="clearBtn">Apagar todo</button>
+  </div>
+
+  <div class="hint">
+    Clickeá cualquier parte del mando para prender/apagar su estado <code>pressed</code>
+    y ver el glow dorado + el flash de rayo en pantalla.
+    Este archivo (<code>index.html</code>) es solo para vista previa — en OBS usás
+    <code>zeus-ps4-skin.css</code> directo con <code>&amp;css=</code> en tu link de overlay real.
+  </div>
+
+<script>
+  const buttons = Array.from(document.querySelectorAll('[data-btn]'));
+
+  buttons.forEach(btn => {
+    btn.style.cursor = 'pointer';
+    btn.addEventListener('click', () => btn.classList.toggle('pressed'));
+  });
+
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    buttons.forEach(b => b.classList.remove('pressed'));
+  });
+
+  document.getElementById('allBtn').addEventListener('click', () => {
+    buttons.forEach(b => b.classList.add('pressed'));
+  });
+
+  function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  async function runDemo() {
+    document.getElementById('demoBtn').disabled = true;
+    buttons.forEach(b => b.classList.remove('pressed'));
+    await sleep(150);
+
+    // quick ripple across every button, one by one
+    for (const b of buttons) {
+      b.classList.add('pressed');
+      await sleep(70);
+      b.classList.remove('pressed');
+    }
+
+    await sleep(200);
+
+    // full strike: everything lights up together, then fades
+    buttons.forEach(b => b.classList.add('pressed'));
+    await sleep(500);
+    buttons.forEach(b => b.classList.remove('pressed'));
+
+    document.getElementById('demoBtn').disabled = false;
+  }
+
+  document.getElementById('demoBtn').addEventListener('click', runDemo);
+
+  // auto-run once on load so the first view already looks alive
+  window.addEventListener('load', () => sleep(400).then(runDemo));
+</script>
+</body>
+</html>

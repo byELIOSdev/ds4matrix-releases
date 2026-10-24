@@ -1,0 +1,282 @@
+/* ============================================================
+   ZEUS — Custom PS4/DualShock skin for GamepadViewer
+   Dark storm theme, gold trim, lightning flash on press.
+   100% CSS shapes, no external image assets required.
+
+   HOW TO USE:
+   1) Host this file somewhere raw (GitHub Gist "raw" link works great).
+   2) Append to your overlay URL:
+      &css=https://your-raw-link/zeus-ps4-skin.css
+   3) In OBS Browser Source set width/height to 800 x 620.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&display=swap');
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+/* ---------- Stage / backdrop ---------- */
+.custom {
+  position: relative;
+  width: 800px;
+  height: 620px;
+  background:
+    radial-gradient(ellipse at 50% 15%, rgba(255, 210, 90, 0.18) 0%, rgba(255, 210, 90, 0) 55%),
+    radial-gradient(ellipse at 50% 100%, rgba(80, 60, 10, 0.35) 0%, rgba(0,0,0,0) 60%),
+    linear-gradient(180deg, #05060a 0%, #0c0e16 45%, #05060a 100%);
+  border-radius: 18px;
+  box-shadow: inset 0 0 120px rgba(0,0,0,0.85);
+  font-family: 'Cinzel', serif;
+}
+
+/* faint storm texture */
+.custom::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(115deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 60px),
+    repeating-linear-gradient(25deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 80px);
+  pointer-events: none;
+  border-radius: 18px;
+}
+
+/* ---------- ZEUS title (generated content — no extra element needed) ---------- */
+.custom::after {
+  content: "⚡ Z E U S ⚡";
+  position: absolute;
+  top: 18px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 54px;
+  font-weight: 900;
+  letter-spacing: 14px;
+  color: #ffe9a8;
+  text-shadow:
+    0 0 10px rgba(255, 220, 120, 0.9),
+    0 0 26px rgba(255, 190, 60, 0.7),
+    0 0 55px rgba(255, 160, 20, 0.5),
+    0 3px 0 #3a2500;
+  animation: zeusPulse 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes zeusPulse {
+  0%, 100% { text-shadow:
+      0 0 10px rgba(255, 220, 120, 0.9),
+      0 0 26px rgba(255, 190, 60, 0.7),
+      0 0 55px rgba(255, 160, 20, 0.5),
+      0 3px 0 #3a2500; }
+  50% { text-shadow:
+      0 0 16px rgba(255, 230, 150, 1),
+      0 0 40px rgba(255, 200, 80, 0.9),
+      0 0 90px rgba(255, 170, 30, 0.7),
+      0 3px 0 #3a2500; }
+}
+
+/* ---------- Controller body ---------- */
+.custom .controller {
+  position: absolute;
+  top: 130px;
+  left: 50px;
+  width: 700px;
+  height: 420px;
+}
+
+.custom .controller::before {
+  /* DS4-ish silhouette: two rounded "wings" + center bridge, drawn with gradients */
+  content: "";
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 700px;
+  height: 260px;
+  background:
+    radial-gradient(circle at 110px 150px, #1a1d27 0%, #121420 70%, transparent 72%),
+    radial-gradient(circle at 590px 150px, #1a1d27 0%, #121420 70%, transparent 72%),
+    linear-gradient(180deg, #171a24 0%, #0d0f17 100%);
+  border-radius: 40px 40px 70px 70px / 40px 40px 120px 120px;
+  border: 2px solid #4a3a12;
+  box-shadow:
+    0 0 0 1px rgba(255, 200, 90, 0.08),
+    0 20px 60px rgba(0,0,0,0.7),
+    inset 0 0 40px rgba(255, 190, 70, 0.04);
+}
+
+/* ---------- Sticks ---------- */
+.custom .sticks {
+  position: absolute;
+  top: 190px;
+  left: 0;
+  width: 700px;
+  height: 100px;
+}
+
+.custom .stick {
+  position: absolute;
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #2b2f3d 0%, #121420 65%, #0a0b11 100%);
+  border: 2px solid #caa24a;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.6), inset 0 0 10px rgba(0,0,0,0.6);
+  transition: box-shadow 0.08s ease, border-color 0.08s ease;
+}
+.custom .stick::after {
+  content: "";
+  position: absolute;
+  inset: 26px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #c99b3a 0%, #7a5a16 100%);
+  box-shadow: 0 0 8px rgba(255, 190, 70, 0.3);
+}
+.custom .stick.left  { left: 220px; top: 4px; }
+.custom .stick.right { left: 400px; top: 4px; }
+
+.custom .stick.pressed,
+.custom .stick.left.pressed,
+.custom .stick.right.pressed {
+  border-color: #fff2b8;
+  box-shadow:
+    0 0 18px 6px rgba(255, 220, 110, 0.85),
+    0 6px 14px rgba(0,0,0,0.6);
+}
+
+/* ---------- D-Pad (arrows) ---------- */
+.custom .arrows {
+  position: absolute;
+  top: 110px;
+  left: 90px;
+  width: 140px;
+  height: 140px;
+}
+.custom .arrows .face,
+.custom .arrows .button {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  background: linear-gradient(180deg, #1c1f2b 0%, #0e0f16 100%);
+  border: 1.5px solid #8a6a28;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.6);
+}
+.custom .arrows .up    { left: 47px; top: 0px;   border-radius: 8px 8px 0 0; }
+.custom .arrows .down  { left: 47px; top: 94px;  border-radius: 0 0 8px 8px; }
+.custom .arrows .left  { left: 0px;  top: 47px;  border-radius: 8px 0 0 8px; }
+.custom .arrows .right { left: 94px; top: 47px;  border-radius: 0 8px 8px 0; }
+
+.custom .arrows .face.pressed,
+.custom .arrows .button.pressed {
+  background: linear-gradient(180deg, #ffdf86 0%, #d79b2a 100%);
+  border-color: #fff2b8;
+  box-shadow: 0 0 16px 4px rgba(255, 210, 90, 0.9);
+}
+
+/* ---------- Face buttons: Triangle / Circle / Cross / Square ---------- */
+.custom .abxy {
+  position: absolute;
+  top: 110px;
+  left: 470px;
+  width: 140px;
+  height: 140px;
+}
+.custom .abxy .button {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #1c1f2b 0%, #0e0f16 100%);
+  border: 1.5px solid #8a6a28;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.6);
+}
+/* y=triangle(top) x=square(left) b=circle(right) a=cross(bottom) */
+.custom .abxy .y { left: 47px; top: 0px;  }
+.custom .abxy .x { left: 0px;  top: 47px; }
+.custom .abxy .b { left: 94px; top: 47px; }
+.custom .abxy .a { left: 47px; top: 94px; }
+
+.custom .abxy .button.pressed {
+  background: linear-gradient(180deg, #ffdf86 0%, #d79b2a 100%);
+  border-color: #fff2b8;
+  box-shadow: 0 0 16px 4px rgba(255, 210, 90, 0.9);
+}
+
+/* ---------- Triggers (L1/L2/R1/R2) ---------- */
+.custom .trigger {
+  position: absolute;
+  width: 140px;
+  height: 22px;
+  top: 20px;
+  background: linear-gradient(180deg, #1c1f2b 0%, #0e0f16 100%);
+  border: 1.5px solid #8a6a28;
+  border-radius: 8px;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.6);
+}
+.custom .trigger.left  { left: 90px; }
+.custom .trigger.right { left: 470px; }
+.custom .trigger.shoulder { top: -2px; }
+
+.custom .trigger.pressed {
+  background: linear-gradient(180deg, #ffdf86 0%, #d79b2a 100%);
+  border-color: #fff2b8;
+  box-shadow: 0 0 16px 4px rgba(255, 210, 90, 0.9);
+}
+
+/* ---------- Share / Options / Touchpad / PS button ---------- */
+.custom .back, .custom .start {
+  position: absolute;
+  top: 100px;
+  width: 30px;
+  height: 14px;
+  background: #15161f;
+  border: 1px solid #6e5420;
+  border-radius: 4px;
+}
+.custom .back  { left: 300px; }
+.custom .start { left: 370px; }
+.custom .back.pressed, .custom .start.pressed {
+  background: #ffdf86;
+  box-shadow: 0 0 10px rgba(255, 210, 90, 0.9);
+}
+
+.custom .touchpad {
+  position: absolute;
+  top: 60px;
+  left: 290px;
+  width: 120px;
+  height: 36px;
+  background: linear-gradient(180deg, #14151e 0%, #0a0a10 100%);
+  border: 1.5px solid #8a6a28;
+  border-radius: 6px;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.7);
+}
+.custom .touchpad.pressed {
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 0 16px 4px rgba(255, 210, 90, 0.8);
+}
+
+/* ---------- Pressed-button global flash on whole stage ---------- */
+.custom:has(.pressed) {
+  animation: zeusStrike 0.25s ease-out;
+}
+@keyframes zeusStrike {
+  0%   { box-shadow: inset 0 0 0 rgba(255,255,255,0); }
+  15%  { box-shadow: inset 0 0 160px rgba(255, 230, 150, 0.35); }
+  100% { box-shadow: inset 0 0 120px rgba(0,0,0,0.85); }
+}
+
+/* ---------- Footer rune line (generated content on .controller) ---------- */
+.custom .controller::after {
+  content: "Δ Ι Α Σ   —   T H E   S K Y   F A T H E R";
+  position: absolute;
+  bottom: -40px;
+  left: 0;
+  width: 700px;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 6px;
+  color: rgba(255, 220, 150, 0.45);
+}
